@@ -48,6 +48,37 @@ function Top5Item(props) {
         store.addMoveItemTransaction(sourceId, targetId);
     }
 
+    function handleItemFocus(event) {
+        event.target.select();
+    }
+
+    function handleToggleItemEdit(event) {
+        if(!editActive) {
+            event.stopPropagation();
+            toggleItemEdit();
+        }
+    }
+
+    function toggleItemEdit() {
+        let newActive = !editActive;
+        if(newActive) {
+            store.setIsItemEditActive();
+        }
+        setEditActive(newActive);
+    }
+
+    function handleKeyPress(event) {
+        if(event.code === "Enter") {
+            if(event.target.value === "" || event.target.value === " ") {
+                store.addUpdateItemTransaction(index, "?");
+            }
+            else if(props.text !== event.target.value) {
+                store.addUpdateItemTransaction(index, event.target.value);
+            }
+            toggleItemEdit();
+        }
+    }
+
     let { index } = props;
 
     let itemClass = "top5-item";
@@ -55,6 +86,20 @@ function Top5Item(props) {
         itemClass = "top5-item-dragged-to";
     }
 
+
+    if(editActive) {
+        return (
+            <input
+                autoFocus
+                id={"item-" + (index+1)}
+                className={itemClass}
+                type='text'
+                onKeyPress={handleKeyPress}
+                onFocus={handleItemFocus}
+                defaultValue={props.text}
+            />
+        );
+    }
     return (
             <ListItem
                 id={'item-' + (index+1)}
@@ -83,7 +128,11 @@ function Top5Item(props) {
                 }}
             >
             <Box sx={{ p: 1 }}>
-                <IconButton aria-label='edit'>
+                <IconButton aria-label='edit' 
+                    onClick={(event) => {
+                        handleToggleItemEdit(event)
+                    }}
+                >
                     <EditIcon style={{fontSize:'48pt'}}  />
                 </IconButton>
             </Box>
