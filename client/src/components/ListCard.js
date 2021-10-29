@@ -40,6 +40,10 @@ function ListCard(props) {
         setEditActive(newActive);
     }
 
+    function handleFocus(event) {
+        event.target.select();
+    }
+
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         store.markListForDeletion(id);
@@ -47,8 +51,10 @@ function ListCard(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            let id = event.target.id.substring("list-".length);
-            store.changeListName(id, text);
+            if(event.target.value !== idNamePair.name) {
+                let id = event.target.id.substring("list-".length);
+                store.changeListName(id, text);
+            }
             toggleEdit();
         }
     }
@@ -99,6 +105,7 @@ function ListCard(props) {
                 className='list-card'
                 onKeyPress={handleKeyPress}
                 onChange={handleUpdateText}
+                onFocus={handleFocus}
                 defaultValue={idNamePair.name}
                 inputProps={{style: {fontSize: 48}}}
                 InputLabelProps={{style: {fontSize: 24}}}

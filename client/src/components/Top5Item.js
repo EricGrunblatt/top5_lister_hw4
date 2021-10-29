@@ -89,21 +89,28 @@ function Top5Item(props) {
 
     if(editActive) {
         return (
-            <input
-                autoFocus
+            <TextField
+                margin="normal"
+                required
+                fullWidth
                 id={"item-" + (index+1)}
+                label={"Item " + (index+1) + " Name"}
+                name="name"
+                autoComplete={"Item " + (index+1) + " Name"}
                 className={itemClass}
-                type='text'
-                onKeyPress={handleKeyPress}
                 onFocus={handleItemFocus}
+                onKeyPress={handleKeyPress}
                 defaultValue={props.text}
+                inputProps={{style: {fontSize: 48}}}
+                InputLabelProps={{style: {fontSize: 24}}}
+                autoFocus
             />
         );
     }
     return (
             <ListItem
                 id={'item-' + (index+1)}
-                key={props.key}
+                key={props.index}
                 className={itemClass}
                 onDragStart={(event) => {
                     handleDragStart(event, (index+1))
