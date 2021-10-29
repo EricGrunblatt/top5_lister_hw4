@@ -112,6 +112,8 @@ function AuthContextProvider(props) {
                 type: AuthActionType.LOGOUT_USER,
                 payload: {}
             })
+            console.log("logout");
+            await response.cookie("token", "", { maxAge: 1 });
             history.push("/");
         }
     }
