@@ -142,8 +142,9 @@ loginUser = async (req, res) => {
 logoutUser = async (req, res) => {
     try {
         console.log("logout");
-        await res.cookie("token", "", { maxAge: 1 });
-        auth.logoutUser();
+        res.clearCookie("token").status(200).json({
+            success: true,
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send();
