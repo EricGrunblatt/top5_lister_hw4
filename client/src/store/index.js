@@ -256,6 +256,8 @@ function GlobalStoreContextProvider(props) {
                 type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
                 payload: top5List
             });
+            store.listMarkedForDeletion = top5List;
+            //console.log(store.listMarkedForDeletion);
         }
     }
 

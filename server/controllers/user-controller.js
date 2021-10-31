@@ -5,20 +5,15 @@ const bcrypt = require('bcryptjs')
 getLoggedIn = async (req, res) => {
     try {
         auth.verify(req, res, async function () {
-            try {
-                const loggedInUser = await User.findOne({ _id: req.userId });
-                return res.status(200).json({
-                    loggedIn: true,
-                    user: {
-                        firstName: loggedInUser.firstName,
-                        lastName: loggedInUser.lastName,
-                        email: loggedInUser.email
-                    }
-                }).send();
-            } catch (err) {
-                console.error(err);
-                res.status(500).send();
-            }
+            const loggedInUser = await User.findOne({ _id: req.userId });
+            return res.status(200).json({
+                loggedIn: true,
+                user: {
+                    firstName: loggedInUser.firstName,
+                    lastName: loggedInUser.lastName,
+                    email: loggedInUser.email
+                }
+            }).send();
         })
     } catch (err) {
         console.error(err);

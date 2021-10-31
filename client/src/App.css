@@ -337,6 +337,10 @@ input {
   float: right;
 }
 
+#confirm-modal-button {
+  float: left;
+}
+
 #confirm-cancel-container {
   text-align: center;
 }
