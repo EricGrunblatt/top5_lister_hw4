@@ -5,6 +5,8 @@ import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 import DeleteModal from './DeleteModal'
+import AuthContext from '../auth'
+
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -12,6 +14,7 @@ import DeleteModal from './DeleteModal'
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
 
     useEffect(() => {
         store.loadIdNamePairs();
@@ -25,7 +28,7 @@ const HomeScreen = () => {
         listCard = 
             <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
             {
-                store.idNamePairs.map((pair) => (
+                store.idNamePairs.filter(idPair => (idPair.ownerEmail === auth.user.email)).map(pair => (
                     <ListCard
                         key={pair._id}
                         idNamePair={pair}

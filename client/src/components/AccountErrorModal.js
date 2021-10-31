@@ -1,5 +1,5 @@
-import { useContext } from 'react'
-import { GlobalStoreContext } from '../store'
+//import { useContext } from 'react'
+//import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
@@ -20,7 +20,7 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 300,
     bgcolor: 'background.paper',
-    border: '3px solid #000',
+    border: '2px solid #000',
     boxShadow: 24,
     textAlign: 'center',
     pt: 2,
@@ -28,25 +28,14 @@ const style = {
     pb: 3,
   };
 
-function DeleteModal() {
-    const { store } = useContext(GlobalStoreContext);
+function AccountErrorModal() {
+    //const { store } = useContext(GlobalStoreContext);
     
     let name = "";
     let isOpen = false;
-    if (store.listMarkedForDeletion) {
-        name = store.listMarkedForDeletion.name;
-        console.log(name);
-        isOpen = true;
-    }
-
-    function handleDeleteList() {
-        store.deleteMarkedList(store.listMarkedForDeletion._id);
-        handleCloseModal();
-    }
 
     function handleCloseModal() {
         isOpen=false;
-        store.unmarkListForDeletion();
     }
     
     return (
@@ -62,19 +51,14 @@ function DeleteModal() {
                         Delete the Top 5 {name} List?
                     </h2>
                     <Button 
-                        id="dialog-confirm-button"
-                        className="modal-button"
-                        onClick={handleDeleteList}
-                    >Confirm</Button>
-                    <Button 
                         id="dialog-cancel-button"
                         className="modal-button" 
                         onClick={handleCloseModal}
-                    >Cancel</Button>
+                    >Close</Button>
                 </Box>
             </Modal>
         </div>
     );
 }
 
-export default DeleteModal;
+export default AccountErrorModal;
