@@ -26,6 +26,7 @@ export const GlobalStoreActionType = {
     UNMARK_LIST_FOR_DELETION: "UNMARK_LIST_FOR_DELETION",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
+    SET_ITEM_EDIT_INACTIVE: "SET_ITEM_EDIT_INACTIVE",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE"
 }
 
@@ -40,7 +41,7 @@ function GlobalStoreContextProvider(props) {
         idNamePairs: [],
         currentList: null,
         newListCounter: 0,
-        listNameActive: false,
+        lisListNameActive: false,
         itemActive: false,
         listMarkedForDeletion: null
     });
@@ -142,6 +143,17 @@ function GlobalStoreContextProvider(props) {
                     listMarkedForDeletion: null
                 });
             }
+            // STOP EDITING A LIST ITEM
+            case GlobalStoreActionType.SET_ITEM_EDIT_INACTIVE: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null
+                });
+            }
             // START EDITING A LIST NAME
             case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
                 return setStore({
@@ -149,6 +161,17 @@ function GlobalStoreContextProvider(props) {
                     currentList: payload,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: true,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null
+                });
+            }
+            // STOP EDITING A LIST NAME
+            case GlobalStoreActionType.SET_LIST_NAME_EDIT_INACTIVE: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: payload,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
                     isItemEditActive: false,
                     listMarkedForDeletion: null
                 });
@@ -370,10 +393,26 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
+    // THIS FUNCTION DISABLES THE PROCESS OF EDITING A LIST NAME
+    store.setIsListNameEditInactive = function () {
+        storeReducer({
+            type: GlobalStoreActionType.SET_LIST_NAME_EDIT_INACTIVE,
+            payload: null
+        });
+    }
+
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING AN ITEM
     store.setIsItemEditActive = function () {
         storeReducer({
             type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
+            payload: null
+        });
+    }
+
+    // THIS FUNCTION DISABLES THE PROCESS OF EDITING AN ITEM
+    store.setIsItemEditInactive = function () {
+        storeReducer({
+            type: GlobalStoreActionType.SET_ITEM_EDIT_INACTIVE,
             payload: null
         });
     }

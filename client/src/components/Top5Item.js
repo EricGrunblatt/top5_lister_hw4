@@ -75,6 +75,7 @@ function Top5Item(props) {
             else if(props.text !== event.target.value) {
                 store.addUpdateItemTransaction(index, event.target.value);
             }
+            store.setIsItemEditInactive();
             toggleItemEdit();
         }
     }

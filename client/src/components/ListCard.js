@@ -20,8 +20,8 @@ function ListCard(props) {
     const [text, setText] = useState("");
     const { idNamePair } = props;
 
-    function handleLoadList(event, id) {
-        if (!event.target.disabled) {
+    function handleLoadList(id) {
+        if (!cardStatus) {
             // CHANGE THE CURRENT LIST
             store.setCurrentList(id);
         }
@@ -55,11 +55,16 @@ function ListCard(props) {
                 let id = event.target.id.substring("list-".length);
                 store.changeListName(id, text);
             }
+            store.setIsListNameEditInactive();
             toggleEdit();
         }
     }
     function handleUpdateText(event) {
         setText(event.target.value);
+    }
+    let cardStatus = false;
+    if(store.isListNameEditActive) {
+        cardStatus = true;
     }
 
     let cardElement =
@@ -68,8 +73,8 @@ function ListCard(props) {
             key={idNamePair._id}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
             button
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
+            onClick={() => {
+                handleLoadList(idNamePair._id)
             }
             }
             style={{
@@ -79,12 +84,16 @@ function ListCard(props) {
         >
                 <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
                 <Box sx={{ p: 1 }}>
-                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                    <IconButton 
+                        disabled={cardStatus}
+                        onClick={handleToggleEdit} aria-label='edit'>
                         <EditIcon style={{fontSize:'48pt'}} />
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 1 }}>
-                    <IconButton onClick={(event) => {
+                    <IconButton 
+                        disabled={cardStatus}
+                        onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
                     }} aria-label='delete'>
                         <DeleteIcon style={{fontSize:'48pt'}} />

@@ -38,10 +38,16 @@ const HomeScreen = () => {
             }
             </List>;
     }
+
+    let disableAdd = false;
+    if(store.isListNameEditActive) {
+        disableAdd = true;
+    }
     return (
         <div id="top5-list-selector">
             <div id="list-selector-heading">
             <Fab 
+                disabled={disableAdd}
                 color="primary" 
                 aria-label="add"
                 id="add-list-button"
