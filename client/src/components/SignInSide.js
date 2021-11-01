@@ -15,6 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { GlobalStoreContext } from '../store'
+import AccountErrorModal from './AccountErrorModal'
 
 function Copyright(props) {
   return (
@@ -128,6 +129,7 @@ export default function SignInSide() {
             </Box>
           </Box>
         </Grid>
+        <AccountErrorModal />
       </Grid>
     </ThemeProvider>
   );

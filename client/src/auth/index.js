@@ -16,9 +16,16 @@ export const AuthActionType = {
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
-        loggedIn: false
+        loggedIn: false,
+        errorMessage: ''
     });
     const history = useHistory();
+
+    function setErrorMessage() {
+        return setAuth({
+            errorMessage: ''
+        })
+    }
 
     useEffect(() => {
         auth.getLoggedIn();
@@ -64,12 +71,12 @@ function AuthContextProvider(props) {
                     type: AuthActionType.GET_LOGGED_IN,
                     payload: {
                         loggedIn: response.data.loggedIn,
-                        user: response.data.user
+                        user: response.data.user,
                     }
                 });
             }
         } catch (err) {
-            console.log(err);
+            //console.log(err);
         }
     }
 
@@ -86,23 +93,33 @@ function AuthContextProvider(props) {
                 history.push("/");
                 store.loadIdNamePairs();
             }
+            
         } catch (err) {
-            console.log(err);
+            return setAuth({
+                errorMessage: err.response.data.errorMessage
+            })
         }
     }
 
     auth.loginUser = async function(userData, store) {
-        const response = await api.loginUser(userData);
-        if (response.status === 200) {
-            authReducer({
-                type: AuthActionType.LOGIN_USER,
-                payload: {
-                    user: response.data.user
-                }
+        try {
+            const response = await api.loginUser(userData);
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.LOGIN_USER,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                history.push("/");
+                store.loadIdNamePairs();
+            }
+        } catch (err) {
+            return setAuth({
+                errorMessage: err.response.data.errorMessage
             })
-            history.push("/");
-            store.loadIdNamePairs();
         }
+        
     }
 
     auth.logoutUser = async function() {
@@ -110,7 +127,11 @@ function AuthContextProvider(props) {
         if(response.status === 200) {
             authReducer({
                 type: AuthActionType.LOGOUT_USER,
-                payload: {}
+                payload: {
+                    user: null,
+                    loggedIn: false,
+                    errorMessage: ''
+                }
             })
             history.push("/");
         }
@@ -118,7 +139,7 @@ function AuthContextProvider(props) {
 
     return (
         <AuthContext.Provider value={{
-            auth
+            auth, setErrorMessage
         }}>
             {props.children}
         </AuthContext.Provider>

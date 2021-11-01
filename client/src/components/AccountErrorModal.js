@@ -1,8 +1,10 @@
-//import { useContext } from 'react'
-//import { GlobalStoreContext } from '../store'
+import { useContext } from 'react'
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import AuthContext from '../auth'
 
 /*
     This modal is shown when the user asks to delete a list. Note 
@@ -29,12 +31,17 @@ const style = {
   };
 
 function AccountErrorModal() {
-    //const { store } = useContext(GlobalStoreContext);
-    
-    let name = "";
+    const { auth, setErrorMessage } = useContext(AuthContext);
+
+    let errorMessage = "";
     let isOpen = false;
+    if(auth.errorMessage) {
+        errorMessage = auth.errorMessage;
+        isOpen = true;
+    }
 
     function handleCloseModal() {
+        setErrorMessage();
         isOpen=false;
     }
     
@@ -42,14 +49,14 @@ function AccountErrorModal() {
         <div>
             <Modal
                 open={isOpen}
-                aria-labelledby="delete-modal">
+                aria-labelledby="error-modal">
                 <Box 
                     className="modal-dialog"
                     sx={{ ...style, width: 400 }}
                 >
-                    <h2 className="dialog-header">
-                        Delete the Top 5 {name} List?
-                    </h2>
+                    <Alert severity="error">
+                        <AlertTitle>{errorMessage}</AlertTitle>
+                    </Alert>
                     <Button 
                         id="dialog-cancel-button"
                         className="modal-button" 
