@@ -45,7 +45,10 @@ function Top5Item(props) {
         console.log("handleDrop (sourceId, targetId): ( " + sourceId + ", " + targetId + ")");
 
         // UPDATE THE LIST
-        store.addMoveItemTransaction(sourceId, targetId);
+        if(sourceId != targetId) {
+            store.addMoveItemTransaction(sourceId, targetId);
+        }
+  
     }
 
     function handleItemFocus(event) {
@@ -81,7 +84,6 @@ function Top5Item(props) {
     }
 
     let { index } = props;
-
     let itemClass = "top5-item";
     if (draggedTo) {
         itemClass = "top5-item-dragged-to";
@@ -91,7 +93,7 @@ function Top5Item(props) {
     if(editActive) {
         return (
             <TextField
-                margin="normal"
+                margin="auto"
                 required
                 fullWidth
                 id={"item-" + (index+1)}
@@ -144,7 +146,7 @@ function Top5Item(props) {
                     <EditIcon style={{fontSize:'48pt'}}  />
                 </IconButton>
             </Box>
-                <Box sx={{ p: 1, flexGrow: 1 }}>{props.text}</Box>
+                <Box sx={{ p: 1 }}>{props.text}</Box>
             </ListItem>
     )
 }

@@ -12,6 +12,10 @@ import { GlobalStoreContext } from '../store/index.js'
 function WorkspaceScreen() {
     const { store } = useContext(GlobalStoreContext);
 
+    //if(window.location.reload) {
+    //    window.history.pushState('', '', '/');
+    //}
+
     let editItems = "";
     if (store.currentList) {
         editItems = 

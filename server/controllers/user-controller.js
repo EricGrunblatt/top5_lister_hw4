@@ -145,7 +145,7 @@ logoutUser = async (req, res) => {
         console.log("logout");
         res.clearCookie("token").status(200).json({
             success: true,
-        });
+        }).send();
     } catch (err) {
         console.error(err);
         res.status(500).send();
